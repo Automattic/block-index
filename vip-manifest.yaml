@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=./vip-manifest.schema.json
+#
+# Handoff manifest for Block Index.
+#
+# This is the single file WordPress VIP reads to register and load your
+# integration — VIP never sees your repo. `composer setup` (or `vip-integration
+# init`) rewrites the example names below to yours. Fill in the rest, then check
+# it with `npx @automattic/vip-integration validate`.
+#
+# See docs/manifest.md for a field-by-field guide, and vip-manifest.schema.json
+# for the full schema (fields, types, and constraints).
+
+manifest_version: 1
+manifest_kind: vip-integration-handoff
+
+integration:
+  slug: block-index
+  display_name: Block Index
+  summary: Block Index integration for WordPress VIP.
+  partner:
+    name: Automattic
+    support_contact: REPLACE_ME
+
+documentation:
+  public_url: https://REPLACE_ME
+  support_url: https://REPLACE_ME
+
+runtime:
+  wordpress_plugin:
+    folder: block-index
+    entry_file: block-index.php
+    php_namespace: 'Automattic\BlockIndex'
+    scope: site
+
+runtime_config:
+  constant_name: VIP_BLOCK_INDEX_CONFIG
+  fields:
+    - key: api_base_url
+      label: API base URL
+      type: url
+      required: true
+      help: Base URL for the vendor API.
+    - key: api_token
+      label: API token
+      type: secret
+      required: true
+      help: Token used to authenticate vendor API requests. Stored encrypted.
+    - key: signature_label
+      label: Signature label
+      type: string
+      required: false
+      help: Text rendered in the site footer signature.
+
+telemetry:
+  prefix: exampleintegration_
+  default_properties:
+    - plugin_version
+  events:
+    - name: exampleintegration_sum_requested
+      type: tracks
+      trigger: The REST /sum endpoint serves a request.
+      properties:
+        - route
+      note: Usage metadata only — no request payload or config values.
+
+release:
+  plugin_version: 1.0.0
+  version_strategy: latest
+  migration_required: false
+  changelog: Initial release.
